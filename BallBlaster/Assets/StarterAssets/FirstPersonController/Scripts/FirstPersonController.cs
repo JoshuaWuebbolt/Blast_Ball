@@ -3,6 +3,7 @@
 using UnityEngine.InputSystem;
 #endif
 
+
 namespace StarterAssets
 {
 	[RequireComponent(typeof(CharacterController))]
@@ -64,6 +65,9 @@ namespace StarterAssets
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
 
+		// respawn
+		private Vector3 spawnPosition;
+
 	
 #if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
@@ -108,6 +112,16 @@ namespace StarterAssets
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
+
+			spawnPosition = transform.position;
+
+		}
+		
+		private void respawn()
+		{
+				Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
+				transform.position = spawnPosition;
+				Debug.Log("The object new position is: " + transform.position);
 		}
 
 		private void Update()
@@ -119,25 +133,30 @@ namespace StarterAssets
 			if (Mouse.current.rightButton.wasPressedThisFrame)
 			{
 				Debug.Log("Right mouse button clicked!");
-				Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
-				transform.position = new Vector3(1, 1, 1);
-				Debug.Log("The object new position is: " + transform.position);
+				respawn();
 			}
-            
-        
+
+
 		}
 	private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("OOB"))
         {
 			Debug.Log("Player went out of bounds. Respawning...");
-			Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
-			transform.position = new Vector3(1, 1, 1);
-			Debug.Log("The object new position is: " + transform.position);
+			respawn();
         }
     }
 
-		private void LateUpdate()
+        private void OnTriggerStay(Collider other)
+        {
+			if (other.CompareTag("OOB"))
+			{
+				Debug.Log("Player staying out of bounds. Respawning...");
+				respawn();
+			}
+        }
+
+        private void LateUpdate()
 		{
 			CameraRotation();
 		}
