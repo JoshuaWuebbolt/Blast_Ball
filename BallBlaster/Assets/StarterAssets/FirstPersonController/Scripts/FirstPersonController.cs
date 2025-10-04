@@ -115,7 +115,27 @@ namespace StarterAssets
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
+
+			if (Mouse.current.rightButton.wasPressedThisFrame)
+			{
+				Debug.Log("Right mouse button clicked!");
+				Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
+				transform.position = new Vector3(1, 1, 1);
+				Debug.Log("The object new position is: " + transform.position);
+			}
+            
+        
 		}
+	private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("OOB"))
+        {
+			Debug.Log("Player went out of bounds. Respawning...");
+			Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
+			transform.position = new Vector3(1, 1, 1);
+			Debug.Log("The object new position is: " + transform.position);
+        }
+    }
 
 		private void LateUpdate()
 		{
