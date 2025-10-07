@@ -15,29 +15,48 @@ public class Shooting : MonoBehaviour
     }
 
     // Update is called once per frame
+    // void Update()
+    // {
+    //     if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+    //     {
+    //         Shoot();
+    //     }
+        
+    // }
+
+    private float currentShootForce = 0f;
+    private bool isCharging = false;
+    private float maxShootForce = 50f;
+    private float chargeRate = 50f; // units per second
+
     void Update()
     {
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (Mouse.current != null)
         {
-            Shoot();
+            if (Mouse.current.leftButton.isPressed)
+            {
+                isCharging = true;
+                currentShootForce += chargeRate * Time.deltaTime;
+                currentShootForce = Mathf.Min(currentShootForce, maxShootForce);
+            }
+            else if (isCharging && Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                Shoot();
+                currentShootForce = 0f;
+                isCharging = false;
+            }
         }
-        
     }
 
     void Shoot() 
     {
         Vector2 pos = Mouse.current.position.ReadValue();
-        // Ray ray = playerCamera.ScreenPointToRay(pos);
-        // if (Physics.Raycast(ray, out var hit, range))
-        // {
-            // Debug.Log(hit.transform.name);
-            // Spawn the effect at the hit point, facing the surface normal
-            var create = Instantiate(hitEffectPrefab, playerCamera.transform.position + playerCamera.transform.forward * 1f, Quaternion.LookRotation(playerCamera.transform.forward));
-            Rigidbody rb = create.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.linearVelocity = playerCamera.transform.forward * shootForce;
-            }
-        // }
+
+        var create = Instantiate(hitEffectPrefab, playerCamera.transform.position + playerCamera.transform.forward * 1f, Quaternion.LookRotation(playerCamera.transform.forward));
+        Rigidbody rb = create.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = playerCamera.transform.forward * currentShootForce;
+        }
     }
 }
