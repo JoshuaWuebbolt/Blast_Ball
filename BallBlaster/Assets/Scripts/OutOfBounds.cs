@@ -9,8 +9,6 @@ public class OutOfBounds : MonoBehaviour
     void Start()
     {
         spawnPosition = transform.position;
-        Debug.Log("Player started");
-
     }
     // Check for collision with OOB tagged objects
     private void OnTriggerEnter(Collider other)
@@ -30,6 +28,8 @@ public class OutOfBounds : MonoBehaviour
                 rb.angularVelocity = Vector3.zero;
             }
         }
+
+
     }
 
     // Update is called once per frame    
