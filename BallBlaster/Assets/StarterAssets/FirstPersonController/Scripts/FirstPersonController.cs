@@ -50,7 +50,18 @@ namespace StarterAssets
 		[Tooltip("How far in degrees can you move the camera up")]
 		public float TopClamp = 90.0f;
 		[Tooltip("How far in degrees can you move the camera down")]
+
+		public float launchForce = 100f;
+		[Tooltip("The force which the player is launched when over charging")]
+		private float currentShootForce = 0f;
+		private bool isCharging = false;
+		public float maxShootForce = 50f;
+		[Tooltip("The maximum force the player can charge the gun to")]
+		private float chargeRate = 50f; // units per second
 		public float BottomClamp = -90.0f;
+
+		    public Camera playerCamera;
+    public GameObject hitEffectPrefab;
 
 		// cinemachine
 		private float _cinemachineTargetPitch;
@@ -136,16 +147,60 @@ namespace StarterAssets
 				respawn();
 			}
 
-
-		}
-	private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("OOB"))
+			        if (Mouse.current != null)
         {
-			Debug.Log("Player went out of bounds. Respawning...");
-			respawn();
+            if (Mouse.current.leftButton.isPressed)
+            {
+                isCharging = true;
+                currentShootForce += chargeRate * Time.deltaTime;
+                currentShootForce = Mathf.Min(currentShootForce, maxShootForce * 2f); // allow overcharge
+            }
+            else if (isCharging && Mouse.current.leftButton.wasReleasedThisFrame)
+            {
+                if (currentShootForce > maxShootForce)
+                {
+                    LaunchPlayer();
+                }
+                else
+                {
+                    Shoot();
+                }
+                currentShootForce = 0f;
+                isCharging = false;
+            }
+        }
+
+
+	}
+	    void Shoot() 
+    {
+        Vector2 pos = Mouse.current.position.ReadValue();
+
+        var create = Instantiate(hitEffectPrefab, playerCamera.transform.position + playerCamera.transform.forward * 1f, Quaternion.LookRotation(playerCamera.transform.forward));
+        Rigidbody rb = create.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.linearVelocity = playerCamera.transform.forward * currentShootForce;
         }
     }
+
+	void LaunchPlayer()
+	{
+		Debug.Log("Launching player!");
+		// Apply force by setting vertical velocity
+		_verticalVelocity = launchForce;
+	}
+
+
+	
+	private void OnTriggerEnter(Collider other)
+		{
+			if (other.CompareTag("OOB"))
+			{
+				Debug.Log("Player went out of bounds. Respawning...");
+				respawn();
+			}
+		}
 
         private void OnTriggerStay(Collider other)
         {

@@ -37,11 +37,18 @@ public class Shooting : MonoBehaviour
             {
                 isCharging = true;
                 currentShootForce += chargeRate * Time.deltaTime;
-                currentShootForce = Mathf.Min(currentShootForce, maxShootForce);
+                currentShootForce = Mathf.Min(currentShootForce, maxShootForce * 2f); // allow overcharge
             }
             else if (isCharging && Mouse.current.leftButton.wasReleasedThisFrame)
             {
-                Shoot();
+                if (currentShootForce > maxShootForce)
+                {
+                    LaunchPlayer();
+                }
+                else
+                {
+                    Shoot();
+                }
                 currentShootForce = 0f;
                 isCharging = false;
             }
@@ -57,6 +64,26 @@ public class Shooting : MonoBehaviour
         if (rb != null)
         {
             rb.linearVelocity = playerCamera.transform.forward * currentShootForce;
+        }
+    }
+
+    void LaunchPlayer()
+    {
+        Debug.Log("Launching player!");
+        CharacterController controller = GetComponent<CharacterController>();
+        if (controller != null)
+        {
+            Debug.Log("CharacterController found, applying launch movement.");
+            // Calculate launch direction and force
+            float launchForce = Mathf.Max(currentShootForce - maxShootForce, 10f);
+            Vector3 launchDirection = -playerCamera.transform.forward * launchForce;
+
+            // Move the player using CharacterController
+            controller.Move(launchDirection * Time.deltaTime);
+        }
+        else
+        {
+            Debug.LogWarning("No Rigidbody or CharacterController found on player for launching.");
         }
     }
 }
