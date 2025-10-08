@@ -53,11 +53,11 @@ namespace StarterAssets
 
 		public float launchForce = 100f;
 		[Tooltip("The force which the player is launched when over charging")]
-		private float currentShootForce = 0f;
+		public static float currentShootForce = 0f;
 		private bool isCharging = false;
 		public float maxShootForce = 50f;
 		[Tooltip("The maximum force the player can charge the gun to")]
-		private float chargeRate = 50f; // units per second
+		private float chargeRate = 40f; // units per second
 		public float BottomClamp = -90.0f;
 
 		    public Camera playerCamera;
