@@ -6,7 +6,7 @@ public class ChargeBar : MonoBehaviour
     public StarterAssets.FirstPersonController firstPersonController; // Assign in Inspector
     public float maxShootForce = 0f;
     public Vector3 minScale = Vector3.zero;
-    public Vector3 maxScale = new Vector3(1f, 1f, 1f);
+    public Vector3 maxScale = new Vector3(2f, 2f, 2f);
     public Renderer barRenderer; // Assign in Inspector
 
     public Color normalColor = Color.black;
@@ -16,23 +16,38 @@ public class ChargeBar : MonoBehaviour
 
     void Start()
     {
-        maxShootForce = firstPersonController.maxShootForce;
+        maxShootForce = StarterAssets.FirstPersonController.maxShootForceStatic;
     }
 
     void Update()
     {
         float currentShootForce = StarterAssets.FirstPersonController.currentShootForce;
-        float t = Mathf.Clamp01(currentShootForce / maxShootForce);
+        maxShootForce = StarterAssets.FirstPersonController.maxShootForceStatic;
+        float t = (currentShootForce / maxShootForce);
 
-        // Ensure maxScale is reached only when fully charged
-        Vector3 targetScale = (Mathf.Approximately(t, 1f)) ? maxScale : Vector3.Lerp(minScale, maxScale, t);
+        if (currentShootForce != 0f)
+        {
+            Debug.Log($"Current Shoot Force: {currentShootForce}, Max Shoot Force: {maxShootForce}, Ratio: {t}");
+        }
+
+        // Allow the bar to go over maxScale when t > 1
+        Vector3 targetScale;
+        if (t <= 1f)
+        {
+            targetScale = Vector3.Lerp(minScale, maxScale, t);
+        }
+        else
+        {
+            // Extend beyond maxScale proportionally
+            targetScale = maxScale * t;
+        }
         transform.localScale = targetScale;
 
         if (chargeBarImage != null)
         {
             Debug.Log($"Charge ratio: {t}");
-            // Change color when fully charged
-            Color targetColor = Mathf.Approximately(t, 1f) ? maxColor : normalColor;
+            // Change color when fully charged or overcharged
+            Color targetColor = t >= 1f ? maxColor : normalColor;
             chargeBarImage.canvasRenderer.SetColor(targetColor);
         }
     }

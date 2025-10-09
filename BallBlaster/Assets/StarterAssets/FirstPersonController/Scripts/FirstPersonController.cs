@@ -57,7 +57,9 @@ namespace StarterAssets
 		private bool isCharging = false;
 		public float maxShootForce = 50f;
 		[Tooltip("The maximum force the player can charge the gun to")]
-		private float chargeRate = 40f; // units per second
+		public static float maxShootForceStatic = 50f;
+		public float chargeRate = 40f; // units per second
+		[Tooltip("The rate at which the gun")]
 		public float BottomClamp = -90.0f;
 
 		    public Camera playerCamera;
@@ -125,6 +127,8 @@ namespace StarterAssets
 			_fallTimeoutDelta = FallTimeout;
 
 			spawnPosition = transform.position;
+
+			maxShootForceStatic = maxShootForce;
 
 		}
 		
