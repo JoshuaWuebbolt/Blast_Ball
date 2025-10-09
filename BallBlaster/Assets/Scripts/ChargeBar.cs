@@ -25,10 +25,10 @@ public class ChargeBar : MonoBehaviour
         maxShootForce = StarterAssets.FirstPersonController.maxShootForceStatic;
         float t = (currentShootForce / maxShootForce);
 
-        if (currentShootForce != 0f)
-        {
-            Debug.Log($"Current Shoot Force: {currentShootForce}, Max Shoot Force: {maxShootForce}, Ratio: {t}");
-        }
+        // if (currentShootForce != 0f)
+        // {
+        //     Debug.Log($"Current Shoot Force: {currentShootForce}, Max Shoot Force: {maxShootForce}, Ratio: {t}");
+        // }
 
         // Allow the bar to go over maxScale when t > 1
         Vector3 targetScale;

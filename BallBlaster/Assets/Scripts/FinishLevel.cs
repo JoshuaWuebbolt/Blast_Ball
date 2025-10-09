@@ -8,12 +8,11 @@ public class FinishLevel : MonoBehaviour
     public AudioClip finishClip; // Assign the oneshot AudioClip in Inspector
     public string nextSceneName; // Set the name of the scene to load
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     private bool hasFinished = false;
 
     void Start()
     {
-        audioSource = gameObject.AddComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other)
@@ -28,6 +27,7 @@ public class FinishLevel : MonoBehaviour
 
     private System.Collections.IEnumerator WaitAndChangeScene(float waitTime)
     {
+        Debug.Log("Level finished! Loading next scene: " + nextSceneName);
         yield return new WaitForSeconds(waitTime);
         SceneManager.LoadScene(nextSceneName);
     }

@@ -809,15 +809,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7957458749965675622, guid: 32e9dfca7e59f3a4b9805b03f16f46b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.4
+      value: 0.42
       objectReference: {fileID: 0}
     - target: {fileID: 7957458749965675622, guid: 32e9dfca7e59f3a4b9805b03f16f46b6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 38.73
+      value: 37.39
       objectReference: {fileID: 0}
     - target: {fileID: 7957458749965675622, guid: 32e9dfca7e59f3a4b9805b03f16f46b6, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -7.53
+      value: -2.6
       objectReference: {fileID: 0}
     - target: {fileID: 7957458749965675622, guid: 32e9dfca7e59f3a4b9805b03f16f46b6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1674,7 +1674,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FinishLevel
   player: {fileID: 869827603}
   finishClip: {fileID: 8300000, guid: f3e0a3134124d3e4bb6e31d6f37d6333, type: 3}
-  nextSceneName: 
+  nextSceneName: Scenes/Ocean02
+  audioSource: {fileID: 832575520}
 --- !u!1 &1083348778
 GameObject:
   m_ObjectHideFlags: 0

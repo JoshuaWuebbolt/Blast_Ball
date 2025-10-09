@@ -1,3 +1,4 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class TargetScript : MonoBehaviour
@@ -11,12 +12,13 @@ public class TargetScript : MonoBehaviour
     // Update is called once per frame
     private bool isHit = false;
 
-    [Tooltip("Set the target's name in the Inspector.")]
-    public string targetName;
+    [Tooltip("Set the target that will be activated upon hit.")]
+    public GameObject targetObject;
 
     void Update()
     {
-        // You can use isHit elsewhere in your logic
+        // Rotate the object continuously in x, y, z axes
+        transform.Rotate(new Vector3(1f, 1f, 1f) * Time.deltaTime * 50f);
     }
 
     void OnTriggerEnter(Collider other)
@@ -26,6 +28,14 @@ public class TargetScript : MonoBehaviour
         {
             isHit = true;
             Debug.Log("Target hit!");
+
+            // Make a given object active (replace "objectToActivate" with your reference)
+            GameObject objectToActivate = targetObject; // Assign this in the Inspector
+            if (objectToActivate != null)
+            {
+                Debug.Log("Activating target object: " + objectToActivate.name);
+                objectToActivate.SetActive(true);
+            }
         }
     }
 }
