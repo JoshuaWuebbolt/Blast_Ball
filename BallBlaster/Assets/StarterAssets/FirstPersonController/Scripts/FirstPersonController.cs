@@ -77,7 +77,7 @@ namespace StarterAssets
 		private float _fallTimeoutDelta;
 
 		// respawn
-		private Vector3 spawnPosition;
+		public Vector3 spawnPosition;
 
 	
 #if ENABLE_INPUT_SYSTEM

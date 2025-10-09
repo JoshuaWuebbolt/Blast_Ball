@@ -13,6 +13,7 @@ public class OutOfBounds : MonoBehaviour
     // Check for collision with OOB tagged objects
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("Collision detected with: " + other.gameObject.name);
         if (other.CompareTag("OOB"))
         {
             Debug.Log("Player went out of bounds. Respawning...");
