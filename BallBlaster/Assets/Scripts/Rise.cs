@@ -50,4 +50,12 @@ public class Rise : MonoBehaviour
             }
         }
     }
+
+    // Draw gizmo to show where the platform will be after it rises
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.green;
+        Vector3 futurePosition = Application.isPlaying ? targetPosition : transform.position + Vector3.up * riseAmount;
+        Gizmos.DrawWireCube(futurePosition, transform.localScale);
+    }
 }

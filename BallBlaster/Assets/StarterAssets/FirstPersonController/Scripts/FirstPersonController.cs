@@ -132,51 +132,49 @@ namespace StarterAssets
 
 		}
 		
-		private void respawn()
-		{
-				Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
-				transform.position = spawnPosition;
-				Debug.Log("The object new position is: " + transform.position);
-		}
-
-		private void Update()
-		{
-			JumpAndGravity();
-			GroundedCheck();
-			Move();
-
-			if (Mouse.current.rightButton.wasPressedThisFrame)
-			{
-				Debug.Log("Right mouse button clicked!");
-				respawn();
-			}
-
-			        if (Mouse.current != null)
-        {
-            if (Mouse.current.leftButton.isPressed)
-            {
-                isCharging = true;
-                currentShootForce += chargeRate * Time.deltaTime;
-                currentShootForce = Mathf.Min(currentShootForce, maxShootForce * 2f); // allow overcharge
-            }
-            else if (isCharging && Mouse.current.leftButton.wasReleasedThisFrame)
-            {
-                if (currentShootForce > maxShootForce)
-                {
-                    LaunchPlayer();
-                }
-                else
-                {
-                    Shoot();
-                }
-                currentShootForce = 0f;
-                isCharging = false;
-            }
-        }
-
-
+	private void respawn()
+	{
+			Debug.Log("The object is : " + gameObject.name + " and its position is: " + transform.position);
+			transform.position = spawnPosition;
+			Debug.Log("The object new position is: " + transform.position);
 	}
-	    void Shoot() 
+
+	private void Update()
+	{
+		JumpAndGravity();
+		GroundedCheck();
+		Move();
+
+		// if (Mouse.current.rightButton.wasPressedThisFrame)
+		// {
+		// 	Debug.Log("Right mouse button clicked!");
+		// 	respawn();
+		// }
+
+		if (Mouse.current != null)
+			{
+			if (Mouse.current.leftButton.isPressed)
+				{
+					isCharging = true;
+					currentShootForce += chargeRate * Time.deltaTime;
+					currentShootForce = Mathf.Min(currentShootForce, maxShootForce * 2f); // allow overcharge
+				}
+			else if (isCharging && Mouse.current.leftButton.wasReleasedThisFrame)
+				{
+					if (currentShootForce > maxShootForce)
+						{
+						LaunchPlayer();
+						}
+					else
+						{
+						Shoot();
+						}
+					currentShootForce = 0f;
+					isCharging = false;
+				}
+		}
+	}
+	void Shoot() 
     {
         Vector2 pos = Mouse.current.position.ReadValue();
 
@@ -190,10 +188,18 @@ namespace StarterAssets
 
 	void LaunchPlayer()
 	{
-		Debug.Log("Launching player!");
+		// Debug.Log("Launching player!");
 		// Apply force by setting vertical velocity
 		_verticalVelocity = launchForce;
 	}
+	
+public void PushPlayer(Vector3 force)
+{
+	// Launch the player towards the given direction by setting vertical velocity and moving in force direction
+	_verticalVelocity = force.y;
+	Vector3 horizontalForce = new Vector3(force.x, 0f, force.z);
+	_controller.Move(horizontalForce * Time.deltaTime);
+}
 
 
 	
